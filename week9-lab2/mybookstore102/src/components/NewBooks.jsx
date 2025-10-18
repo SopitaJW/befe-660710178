@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BookCard from './BookCard';
 
 const NewBooks = () => {
+  // กำหนด State สำหรับจัดการข้อมูล
   const [newBooks, setNewBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,12 +11,9 @@ const NewBooks = () => {
     const fetchNewBooks = async () => {
       try {
         setLoading(true);
-
-        // ✅ ใช้ .env ถ้ามี หรือ fallback เป็น localhost:8080
-        const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
-
-        // ✅ ดึงข้อมูลจาก backend ที่ route /api/v1/books/new
-        const response = await fetch(`${apiUrl}/api/v1/books/new`);
+        
+        // เรียก API เพื่อดึงข้อมูลหนังสือใหม่
+        const response = await fetch('http://localhost:8080/api/v1/books/new');
 
         if (!response.ok) {
           throw new Error('Failed to fetch new books');
@@ -24,32 +22,32 @@ const NewBooks = () => {
         const data = await response.json();
         setNewBooks(data);
         setError(null);
-
+        
       } catch (err) {
         setError(err.message);
         console.error('Error fetching new books:', err);
-
+        
       } finally {
         setLoading(false);
       }
     };
 
-    // ✅ เรียก API ทันทีตอนหน้าโหลด
+    // เรียกใช้ฟังก์ชันดึงข้อมูล
     fetchNewBooks();
-  }, []);
+  }, []); // [] = dependency array ว่าง = รันครั้งเดียว
 
-  // ⏳ Loading state
+  // กรณีกำลังโหลดข้อมูล
   if (loading) {
     return (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div className="text-center py-8 col-span-full text-gray-600">
-          กำลังโหลดหนังสือใหม่...
+        <div className="text-center py-8 col-span-full">
+          Loading new arrivals...
         </div>
       </div>
     );
   }
 
-  // ❌ Error state
+  // กรณีเกิดข้อผิดพลาด
   if (error) {
     return (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -60,11 +58,14 @@ const NewBooks = () => {
     );
   }
 
-  // ✅ แสดงผลหนังสือใหม่
+  // กรณีแสดงผลข้อมูลปกติ
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {newBooks.map((book) => (
-        <BookCard key={book.id} book={book} />
+      {newBooks.map(book => (
+        <BookCard 
+          key={book.id} 
+          book={book} 
+        />
       ))}
     </div>
   );

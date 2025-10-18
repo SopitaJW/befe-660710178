@@ -24,11 +24,10 @@ const BookListPage = () => {
       try {
         setLoading(true);
 
-        // ✅ ใช้ .env หรือ fallback เป็น localhost
-        const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
+        // ✅ ใช้ .env หรือ fallback เป็น localhos
 
         // ✅ ดึงข้อมูลจาก backend จริง (Go + PostgreSQL)
-        const response = await fetch(`${apiUrl}/api/v1/books`);
+        const response = await fetch('http://localhost:8080/api/v1/books');
         if (!response.ok) {
           throw new Error('Failed to fetch books');
         }
