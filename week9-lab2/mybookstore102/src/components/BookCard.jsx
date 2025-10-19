@@ -19,8 +19,12 @@ const BookCard = ({ book }) => {
     // Add favorite logic here
   };
 
+  // ✅ ป้องกัน error ถ้า book ยังไม่พร้อม
+  if (!book) return null;
+
   return (
-    <Link to={`/books/${book.id}`} className="block">
+    // ✅ ป้องกัน render "0" ถ้า book.id ยังไม่พร้อม
+    <Link to={book?.id ? `/books/${book.id}` : '#'} className="block">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden group 
         hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
         
@@ -39,7 +43,8 @@ const BookCard = ({ book }) => {
               ใหม่
             </span>
           )}
-          {book.discount && (
+          {/* ✅ แก้ตรงนี้ ป้องกันแสดงเลข 0 */}
+          {book.discount > 0 && (
             <span className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 
               rounded-full text-xs font-semibold">
               -{book.discount}%
@@ -101,7 +106,7 @@ const BookCard = ({ book }) => {
               ))}
             </div>
             <span className="text-sm text-gray-600 ml-2">
-              ({book.reviews || 0} รีวิว)
+              ({book.reviewsCount || 0} รีวิว)
             </span>
           </div>
           

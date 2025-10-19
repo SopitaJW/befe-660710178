@@ -19,10 +19,10 @@ const HomePage = () => {
       <section className="relative bg-gradient-to-r from-viridian-600 to-green-700 text-white">
         <div className="container mx-auto px-4 py-24">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in text-black">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in text-white">
               ยินดีต้อนรับสู่ <span className="text-yellow-300">BookStore</span>
             </h1>
-            <p className="text-xl mb-8 opacity-90 text-black">
+            <p className="text-xl mb-8 opacity-90 text-white">
               ค้นพบหนังสือที่คุณรัก จากคอลเล็กชันมากกว่า 10,000 เล่ม
             </p>
             <div className="flex flex-col sm:flex-row gap-4 ">
@@ -35,7 +35,7 @@ const HomePage = () => {
               </Link>
               <Link to="/categories" 
                 className="inline-flex items-center justify-center px-8 py-3 
-                border-2 border-white text-black font-semibold rounded-lg 
+                border-2 border-white text-white font-semibold rounded-lg 
                 hover:bg-white hover:text-viridian-600 transition-all duration-200 ">
                 ดูหมวดหมู่ทั้งหมด
               </Link>
