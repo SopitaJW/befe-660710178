@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/books": {
             "get": {
-                "description": "Get all books",
+                "description": "Get all books with optional filtering by category",
                 "produces": [
                     "application/json"
                 ],
@@ -25,6 +25,14 @@ const docTemplate = `{
                     "Books"
                 ],
                 "summary": "Get all books",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by category",
+                        "name": "category",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -224,7 +232,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update a book’s details using its ID",
+                "description": "Update a book's details using its ID",
                 "consumes": [
                     "application/json"
                 ],

@@ -56,7 +56,12 @@ info:
 paths:
   /books:
     get:
-      description: Get all books
+      description: Get all books with optional filtering by category
+      parameters:
+      - description: Filter by category
+        in: query
+        name: category
+        type: string
       produces:
       - application/json
       responses:
@@ -156,7 +161,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: Update a book’s details using its ID
+      description: Update a book's details using its ID
       parameters:
       - description: Book ID
         in: path
