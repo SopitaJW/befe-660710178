@@ -104,7 +104,7 @@ const AddBookPage = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/v1/books/', {
+      const response = await fetch('http://localhost:8080/api/v1/books/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,10 +148,14 @@ const AddBookPage = () => {
     navigate('/login');
   };
 
+  const handleCancel = () => {
+    navigate('/store-manager/books');
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-viridian-600 to-green-700">
       {/* Header */}
-      <header className="bg-gradient-to-r from-viridian-600 to-green-700 text-white shadow-lg">
+      <header className="bg-white/10 backdrop-blur-md text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
@@ -171,161 +175,168 @@ const AddBookPage = () => {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">เพิ่มหนังสือใหม่</h2>
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+            {/* Header Card */}
+            <div className="bg-gradient-to-r from-viridian-600 to-green-600 text-white p-8 text-center">
+              <h2 className="text-3xl font-bold">📚 เพิ่มหนังสือใหม่</h2>
+              <p className="mt-2 text-viridian-100">เพิ่มหนังสือเข้าสู่ระบบร้านหนังสือ</p>
+            </div>
 
-            {successMessage && (
-              <div className="mb-6 bg-green-50 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
-                {successMessage}
-              </div>
-            )}
+            {/* Form Content */}
+            <div className="p-8">
+              {successMessage && (
+                <div className="mb-6 bg-green-50 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded">
+                  <p className="font-semibold">✅ {successMessage}</p>
+                </div>
+              )}
 
-            {errors.submit && (
-              <div className="mb-6 bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                {errors.submit}
-              </div>
-            )}
+              {errors.submit && (
+                <div className="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded">
+                  <p className="font-semibold">❌ {errors.submit}</p>
+                </div>
+              )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Title */}
-              <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                  ชื่อหนังสือ <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
-                    ${errors.title
-                      ? 'border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-viridian-500'}`}
-                  placeholder="กรอกชื่อหนังสือ"
-                />
-                {errors.title && (
-                  <p className="mt-1 text-sm text-red-600">{errors.title}</p>
-                )}
-              </div>
-
-              {/* Author */}
-              <div>
-                <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
-                  ชื่อผู้แต่ง <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="author"
-                  name="author"
-                  value={formData.author}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
-                    ${errors.author
-                      ? 'border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-viridian-500'}`}
-                  placeholder="กรอกชื่อผู้แต่ง"
-                />
-                {errors.author && (
-                  <p className="mt-1 text-sm text-red-600">{errors.author}</p>
-                )}
-              </div>
-
-              {/* ISBN */}
-              <div>
-                <label htmlFor="isbn" className="block text-sm font-medium text-gray-700 mb-2">
-                  ISBN <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="isbn"
-                  name="isbn"
-                  value={formData.isbn}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
-                    ${errors.isbn
-                      ? 'border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-viridian-500'}`}
-                  placeholder="กรอก ISBN (ตัวอย่าง: 978-3-16-148410-0)"
-                />
-                {errors.isbn && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isbn}</p>
-                )}
-              </div>
-
-              {/* Year and Price */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Year */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Title */}
                 <div>
-                  <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-2">
-                    ปีที่ตีพิมพ์ <span className="text-red-500">*</span>
+                  <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
+                    ชื่อหนังสือ <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="number"
-                    id="year"
-                    name="year"
-                    value={formData.year}
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
-                      ${errors.year
+                      ${errors.title
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-gray-300 focus:ring-viridian-500'}`}
-                    placeholder="เช่น 2024"
+                        : 'border-gray-300 focus:ring-viridian-500 focus:border-viridian-500'}`}
+                    placeholder="กรอกชื่อหนังสือ"
                   />
-                  {errors.year && (
-                    <p className="mt-1 text-sm text-red-600">{errors.year}</p>
+                  {errors.title && (
+                    <p className="mt-1 text-sm text-red-600">⚠️ {errors.title}</p>
                   )}
                 </div>
 
-                {/* Price */}
+                {/* Author */}
                 <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
-                    ราคา (บาท) <span className="text-red-500">*</span>
+                  <label htmlFor="author" className="block text-sm font-semibold text-gray-700 mb-2">
+                    ชื่อผู้แต่ง <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    value={formData.price}
+                    type="text"
+                    id="author"
+                    name="author"
+                    value={formData.author}
                     onChange={handleChange}
-                    step="0.01"
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
-                      ${errors.price
+                      ${errors.author
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-gray-300 focus:ring-viridian-500'}`}
-                    placeholder="เช่น 350.00"
+                        : 'border-gray-300 focus:ring-viridian-500 focus:border-viridian-500'}`}
+                    placeholder="กรอกชื่อผู้แต่ง"
                   />
-                  {errors.price && (
-                    <p className="mt-1 text-sm text-red-600">{errors.price}</p>
+                  {errors.author && (
+                    <p className="mt-1 text-sm text-red-600">⚠️ {errors.author}</p>
                   )}
                 </div>
-              </div>
 
-              {/* Submit Button */}
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`flex-1 py-3 px-6 rounded-lg font-semibold text-white
-                    transition-colors duration-200
-                    ${isSubmitting
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-viridian-600 hover:bg-viridian-700'}`}
-                >
-                  {isSubmitting ? 'กำลังบันทึก...' : 'เพิ่มหนังสือ'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => navigate('/')}
-                  className="px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold
-                    text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  ยกเลิก
-                </button>
-              </div>
-            </form>
+                {/* ISBN */}
+                <div>
+                  <label htmlFor="isbn" className="block text-sm font-semibold text-gray-700 mb-2">
+                    ISBN <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="isbn"
+                    name="isbn"
+                    value={formData.isbn}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
+                      ${errors.isbn
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-gray-300 focus:ring-viridian-500 focus:border-viridian-500'}`}
+                    placeholder="กรอก ISBN (ตัวอย่าง: 978-3-16-148410-0)"
+                  />
+                  {errors.isbn && (
+                    <p className="mt-1 text-sm text-red-600">⚠️ {errors.isbn}</p>
+                  )}
+                </div>
+
+                {/* Year and Price */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Year */}
+                  <div>
+                    <label htmlFor="year" className="block text-sm font-semibold text-gray-700 mb-2">
+                      ปีที่ตีพิมพ์ <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="year"
+                      name="year"
+                      value={formData.year}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
+                        ${errors.year
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 focus:ring-viridian-500 focus:border-viridian-500'}`}
+                      placeholder="เช่น 2024"
+                    />
+                    {errors.year && (
+                      <p className="mt-1 text-sm text-red-600">⚠️ {errors.year}</p>
+                    )}
+                  </div>
+
+                  {/* Price */}
+                  <div>
+                    <label htmlFor="price" className="block text-sm font-semibold text-gray-700 mb-2">
+                      ราคา (บาท) <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="price"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleChange}
+                      step="0.01"
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2
+                        ${errors.price
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 focus:ring-viridian-500 focus:border-viridian-500'}`}
+                      placeholder="เช่น 350.00"
+                    />
+                    {errors.price && (
+                      <p className="mt-1 text-sm text-red-600">⚠️ {errors.price}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Submit Buttons */}
+                <div className="flex flex-col-reverse sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white rounded-lg 
+                      hover:bg-gray-600 transition-colors font-semibold"
+                  >
+                    ❌ ยกเลิก
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full sm:w-auto flex-1 py-3 px-6 rounded-lg font-semibold text-white
+                      transition-all duration-200 shadow-lg
+                      ${isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-viridian-600 to-green-600 hover:from-viridian-700 hover:to-green-700'}`}
+                  >
+                    {isSubmitting ? '⏳ กำลังบันทึก...' : '💾 เพิ่มหนังสือ'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
